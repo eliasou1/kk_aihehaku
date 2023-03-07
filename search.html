@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keskusteluohjelma</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Hae Keskusteluohjelman jaksoja aiheen perusteella:</h1>
+    <form action="{{ url_for('index') }}" method="post">
+        <input type="text" name="keyword" placeholder="Minua kiinnostaa">
+        <button type="submit">Näytä tulokset</button>
+    </form>
+</body>
+</html>

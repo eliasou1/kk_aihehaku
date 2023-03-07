@@ -1,0 +1,95 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Colors */
+:root {
+  --primary-color: #283044;
+  --secondary-color: #f2f2f2;
+  --accent-color: #ff5722;
+}
+
+/* Layout */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Search Form */
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 50%;
+  max-width: 400px;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Results */
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 2rem;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.result-card img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.result-card h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.result-card p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}

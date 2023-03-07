@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keskusteluohjelma</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Hakutulokset:</h1>
+        {% if results %}
+            {% for video in results.values() %}
+                <div class="video">
+                    <img src="{{ video.thumbnail }}" alt="{{ video.title }}">
+                    <div class="info">
+                        <h2>{{ video.title }}</h2>
+                        <p>
+                            {% set words = video.description.split() %}
+                            {% for word in words %}
+                                {% if keyword.lower() in word.lower() %}
+                                    <strong>{{ word }}</strong> 
+                                {% else %}
+                                    {{ word }} 
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Ei tuloksia. Ehdota tätä kysymykseksi seuraavaan vlogijaksoon!</p>
+        {% endif %}
+    </div>
+</body>
+</html>
