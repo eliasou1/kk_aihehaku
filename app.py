@@ -15,7 +15,10 @@ def index():
         return render_template('search.html')
 
 def search_videos(keyword, channel_id):
-    youtube = build('youtube', 'v3', developerKey='AIzaSyD5EEJLDVKMQJP6dgApelAqezrtmvaXGjg')
+    youtube = build('youtube', 'v3', developerKey='enter_api_key')
+#tätä varten hanki youtube data api v3
+#kysy ohjeet siihen vaikka chatgpt:ltä
+
 
     # Call the search.list method to search for videos
     search_response = youtube.search().list(
