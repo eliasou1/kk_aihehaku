@@ -1,0 +1,79 @@
+from flask import Flask, render_template, request
+import requests
+
+app = Flask(__name__)
+
+
+def highlight_text(text, keyword):
+    """Highlight instances of the keyword in the text."""
+    highlighted_text = text.replace(keyword, f"<mark>{keyword}</mark>")
+    return highlighted_text
+
+
+def get_timestamp_links(description, video_id):
+    """Find timestamp links in the description and generate links."""
+    timestamp_links = []
+    words = description.split()
+    for word in words:
+        if ":" in word:
+            timestamp_parts = word.split(":")
+            if timestamp_parts[0].isdigit() and timestamp_parts[1].isdigit():
+                timestamp_link = f"https://www.youtube.com/watch?v={video_id}&t={timestamp_parts[0]}m{timestamp_parts[1]}s"
+                timestamp_links.append((word, timestamp_link))
+    return timestamp_links
+
+
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+
+@app.route("/results", methods=["GET", "POST"])
+def results():
+    if request.method == "POST":
+        keyword = request.form.get("keyword")
+        channel_id = "UCBHvy-pjrxS88ZqiJXS6Ydw"
+        api_key = "AIzaSyD5EEJLDVKMQJP6dgApelAqezrtmvaXGjg" # Replace with your own YouTube API key
+        search_url = f"https://www.googleapis.com/youtube/v3/search?part=snippet&channelId={channel_id}&maxResults=10&q={keyword}&key={api_key}"
+        response = requests.get(search_url)
+        search_results = response.json()["items"]
+        formatted_results = []
+        for result in search_results:
+            if result["id"]["kind"] == "youtube#video":
+                video_id = result["id"]["videoId"]
+                video_url = f"https://www.youtube.com/watch?v={video_id}"
+                title = result["snippet"]["title"]
+                description = result["snippet"]["description"]
+                highlighted_description = highlight_text(description, keyword)
+                timestamp_links = get_timestamp_links(description, video_id)
+                formatted_results.append({
+                    "title": highlight_text(title, keyword),
+                    "description": highlighted_description,
+                    "timestamp_links": timestamp_links,
+                    "url": video_url,
+                    "keyword": keyword
+                })
+
+        return render_template("results.html", results=formatted_results)
+
+
+@app.template_filter("highlight")
+def highlight_filter(text, keyword=None, css_class="highlight"):
+    if keyword:
+        return text.replace(keyword, f"<span class='{css_class}'>{keyword}</span>")
+    else:
+        return text
+
+
+@app.template_filter("timestamp")
+def timestamp_filter(text, video_id):
+    timestamp_parts = text.split(":")
+    if len(timestamp_parts) == 2 and timestamp_parts[0].isdigit() and timestamp_parts[1].isdigit():
+        seconds = int(timestamp_parts[0]) * 60 + int(timestamp_parts[1])
+        return f'<a href="https://www.youtube.com/watch?v={video_id}&t={seconds}s" target="_blank">{text}</a>'
+    else:
+        return text
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
